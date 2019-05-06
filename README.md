@@ -4,5 +4,5 @@
 A Simple Functional Robotic Arm Design.
 Nema 17 Stepper Motors were used with DVR8825 Stepper Motor Drivers.
 
-![Robot Arm](http://https://github.com/MrNMechanic/4-DOF-Robot-Arm-/blob/master/STL/Full%20Robot%20Arm.JPG)
+![Screenshot](Full Robot Arm.JPG)
 
