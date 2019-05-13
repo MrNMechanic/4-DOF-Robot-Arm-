@@ -26,12 +26,12 @@ const float acceleration = 50.0;
 const int treshold = 30;  
 long tresholdUp, tresholdDown;  
  
-boolean abilitato, muoviX, muoviY, enable;  
+boolean moveX, moveY, enable;  
  
 Bounce btnEnable = Bounce();  
  
-AccelStepper motoreX(AccelStepper::DRIVER, stepX, dirX);
-AccelStepper motoreY(AccelStepper::DRIVER, stepY, dirY);
+AccelStepper motorX(AccelStepper::DRIVER, stepX, dirX);
+AccelStepper motorY(AccelStepper::DRIVER, stepY, dirY);
  
 void setup() {
   speedX = speedY = 0;
@@ -51,14 +51,13 @@ void setup() {
   tresholdDown = (maxSpeed / 2) - treshold;
   tresholdUp = (maxSpeed / 2) + treshold;
  
-  //configura parametri dei motori
-  motoreX.setMaxSpeed(maxSpeed);
-  motoreX.setSpeed(minSpeed);
-  motoreX.setAcceleration(acceleration);
+  motorX.setMaxSpeed(maxSpeed);
+  motorX.setSpeed(minSpeed);
+  motorX.setAcceleration(acceleration);
  
-  motoreY.setMaxSpeed(maxSpeed);
-  motoreY.setSpeed(minSpeed);
-  motoreY.setAcceleration(acceleration);
+  motorY.setMaxSpeed(maxSpeed);
+  motorY.setSpeed(minSpeed);
+  motorY.setAcceleration(acceleration);
 }
  
 void loop() {
@@ -74,52 +73,46 @@ void loop() {
   mapX = map(valX, 0, 1023, minSpeed, maxSpeed);
   mapY = map(valY, 0, 1023, minSpeed, maxSpeed);
  
-  pilotaMotori(mapX, mapY);
+  pilotMotor(mapX, mapY);
  
 }
  
-void pilotaMotori(long mapX, long mapY) {
+void pilotMotor(long mapX, long mapY) {
  
   if (mapX <= tresholdDown) {
-    //x va indietro
     speedX = -map(mapX, tresholdDown, minSpeed,   minSpeed, maxSpeed);
-    muoviX = true;
+    moveX = true;
   } else if (mapX >= tresholdUp) {
-    //x va avanti
     speedX = map(mapX,  maxSpeed, tresholdUp,  maxSpeed, minSpeed);
-    muoviX = true;
+    moveX = true;
   } else {
-    //x sta fermo
     speedX = 0;
-    muoviX = false;
+    moveX = false;
   }
  
   if (mapY <= tresholdDown) {
-    //y va giù
     speedY = -map(mapY, tresholdDown, minSpeed,   minSpeed, maxSpeed);
-    muoviY = true;
+    moveY = true;
   } else if (mapY >= tresholdUp) {
-    //y va su
     speedY = map(mapY,  maxSpeed, tresholdUp,  maxSpeed, minSpeed);
-    muoviY = true;
+    moveY = true;
   } else {
-    //y sta fermo
     speedY = 0;
-    muoviY = false;
+    moveY = false;
   }
  
-  if (muoviX) {
-    motoreX.setSpeed(speedX);
-    motoreX.run();
+  if (moveX) {
+    motorX.setSpeed(speedX);
+    motorX.run();
   } else {
-    motoreX.stop();
+    motorX.stop();
   }
  
-  if (muoviY) {
-    motoreY.setSpeed(speedY);
-    motoreY.run();
+  if (moveY) {
+    motorY.setSpeed(speedY);
+    motorY.run();
   } else {
-    motoreY.stop();
+    motorY.stop();
   }
 }
  
